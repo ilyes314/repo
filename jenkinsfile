@@ -8,12 +8,13 @@ node {
   }
 
   stage('Run image') {
-    sh '''
-      docker run -d --rm -p 8081:80 --name test-nginx xavki/nginx
-      sleep 5
-      curl -s http://localhost:8081 | head
-      docker stop test-nginx
-    '''
-  }
+  sh '''
+    CID=$(docker run -d --rm -p 8081:80 xavki/nginx)
+    sleep 5
+    curl -s http://localhost:8081 | head
+    docker stop "$CID"
+  '''
+}
+
 }
 
